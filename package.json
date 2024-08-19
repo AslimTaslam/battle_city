@@ -1,0 +1,33 @@
+{
+  "name": "battle_city",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd frontend && npm run dev",
+    "start:backend": "cd backend && npm run start:dev",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --ignore-path .gitignore",
+    "lint:fix": "eslint '*/**/*.{js,ts,tsx}' --ignore-path .gitignore --fix"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "eslint": "^9.9.0",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.9",
+    "prettier": "^3.3.3"
+  },
+  "keywords": [],
+  "author": "Eldar Khansuverov",
+  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,json}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}

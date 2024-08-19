@@ -1,0 +1,70 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "rules": {
+    "no-console": "off",
+    "no-inline-comments": "off",
+    "import/no-unresolved": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-named-as-default": "off",
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/interface-name-prefix": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "no-param-reassign": 0,
+    "prettier/prettier": [
+      "error",
+      { "singleQuote": true },
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "react/display-name": 0,
+    "react/no-unescaped-entities": 0,
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0,
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          ["builtin", "external"],
+          ["internal", "parent", "index", "sibling"]
+        ],
+        "newlines-between": "always"
+      }
+    ]
+  },
+  "settings": {
+    "import/internal-regex": "^(src|core|pages|atoms|server|shared)/",
+    "react": {
+      "version": "detect"
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx", ".d.ts"]
+    }
+  }
+}
