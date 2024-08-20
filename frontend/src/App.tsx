@@ -6,7 +6,6 @@ const App: FC = () => {
   return (
     <>
       <GlobalStyle />
-
       <div>{'ETETET'}</div>
     </>
   );

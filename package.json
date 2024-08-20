@@ -22,16 +22,12 @@
     "eslint-plugin-react": "^7.35.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.9",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "vite": "^5.4.2"
   },
   "keywords": [],
   "author": "Eldar Khansuverov",
   "license": "ISC",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "eslint --fix"
   },
