@@ -2,16 +2,24 @@
   "name": "battle_city",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "cd frontend && npm run dev",
     "start:backend": "cd backend && npm run start:dev",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --ignore-path .gitignore",
-    "lint:fix": "eslint '*/**/*.{js,ts,tsx}' --ignore-path .gitignore --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@typescript-eslint/eslint-plugin": "^8.2.0",
+    "@typescript-eslint/parser": "^8.2.0",
     "concurrently": "^8.2.2",
-    "eslint": "^9.9.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.35.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.9",
     "prettier": "^3.3.3"
@@ -25,9 +33,9 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js,json}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
+    "**/*.{js,jsx,ts,tsx}": "eslint --fix"
+  },
+  "dependencies": {
+    "react": "^18.3.1"
   }
 }
