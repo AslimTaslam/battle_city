@@ -115,15 +115,6 @@ input::-webkit-inner-spin-button {
   }
 }
 
-
-
-
-
-#root {
-  min-height: 100vh;
-}
-
-
 @media (max-width: 862px) {
   body {
     overflow-y: auto;

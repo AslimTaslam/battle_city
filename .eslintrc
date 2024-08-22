@@ -8,6 +8,7 @@
     "plugin:prettier/recommended",
     "plugin:import/warnings",
     "plugin:import/typescript",
+    "prettier",
   ],
   "env": {
     "browser": true,
