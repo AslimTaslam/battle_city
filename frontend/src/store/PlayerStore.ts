@@ -1,16 +1,18 @@
 import { makeAutoObservable } from 'mobx';
 
 import TankService from 'src/services/Tank';
-import { TankDirection } from 'src/services/Tank/types';
+import { Direction } from 'src/services/Tank/types';
 
 export class PlayerStore {
   players: TankService[] = [];
-  tankSize: number = 36;
+  height = 36;
+  width = 36;
+  color = 'red';
   bulletSize: number = 5;
   firstPlayerStartCoordinats = { x: 200, y: 550 };
   secondPlayerStartCoordinats = { x: 300, y: 550 };
   tankSpeed = 5;
-  defaultDirection: TankDirection = 'up';
+  defaultDirection: Direction = 'up';
 
   constructor() {
     makeAutoObservable(this);
@@ -21,10 +23,11 @@ export class PlayerStore {
       new TankService(
         this.firstPlayerStartCoordinats.x,
         this.firstPlayerStartCoordinats.y,
+        this.height,
+        this.width,
+        this.color,
         this.tankSpeed,
         this.defaultDirection,
-        this.tankSize,
-        this.bulletSize,
       ),
     ]; // Первый игрок
     if (isMultiplayer) {
@@ -32,16 +35,17 @@ export class PlayerStore {
         new TankService(
           this.secondPlayerStartCoordinats.x,
           this.secondPlayerStartCoordinats.y,
+          this.height,
+          this.width,
+          this.color,
           this.tankSpeed,
           this.defaultDirection,
-          this.tankSize,
-          this.bulletSize,
         ),
       ); // Второй игрок
     }
   }
 
-  movePlayer(id: number, direction: TankDirection, canvasSize: number) {
+  movePlayer(id: number, direction: Direction, canvasSize: number) {
     const player = this.players[id];
     if (player) {
       player.move(direction, canvasSize);

@@ -1,5 +1,5 @@
 import { enemyStore, EnemyStore } from 'src/store/EnemyStore';
-import { TankDirection } from 'src/services/Tank/types';
+import { Direction } from 'src/services/Tank/types';
 
 export class EnemyService {
   private enemyStore: EnemyStore;
@@ -12,7 +12,7 @@ export class EnemyService {
     this.enemyStore.initializeEnemies(count);
   }
 
-  moveEnemy(id: number, direction: TankDirection, canvasSize: number) {
+  moveEnemy(id: number, direction: Direction, canvasSize: number) {
     this.enemyStore.moveEnemy(id, direction, canvasSize);
   }
 
@@ -40,7 +40,7 @@ export class EnemyService {
   // Логика для случайного движения врагов
   moveEnemiesRandomly(canvasSize: number) {
     this.enemyStore.enemies.forEach((enemy, index) => {
-      const directions: TankDirection[] = ['up', 'down', 'left', 'right'];
+      const directions: Direction[] = ['up', 'down', 'left', 'right'];
       const randomDirection =
         directions[Math.floor(Math.random() * directions.length)];
       this.moveEnemy(index, randomDirection, canvasSize);

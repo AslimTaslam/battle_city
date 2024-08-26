@@ -23,3 +23,9 @@ export enum ScreenType {
   Score = 'SCORE',
   GameOverPopup = 'GAME_OVER_POPUP',
 }
+
+export enum GameElementItem {
+  Tank = 'tank',
+  Obstacle = 'obstacle',
+  Bullet = 'bullet',
+}

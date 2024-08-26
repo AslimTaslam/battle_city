@@ -1,39 +1,33 @@
-import { TankDirection } from './types';
+import BulletService from 'src/services/Bullet';
+import { GameElement } from 'src/services/Game/types';
+import { GameElementItem } from 'src/services/Game/data';
+import { Direction } from './types';
 
-export class TankService {
-  x: number;
-  y: number;
+export class TankService extends GameElement {
   speed: number;
-  direction: TankDirection;
-  bullets: { x: number; y: number; direction: TankDirection }[] = [];
-  bulletSpeed: number = 3;
+  direction: Direction;
+  bullets: BulletService[] = [];
+  bulletSpeed: number = 5;
+  bulletWidth: number = 5;
+  bulletHeight: number = 5;
   maxBullets: number = 1;
-  tankSize: number = 36;
-  height: number;
-  width: number;
-  bulletSize: number = 5;
 
   constructor(
     x: number,
     y: number,
+    height: number,
+    width: number,
+    color: string,
     speed: number,
-    direction: TankDirection,
-    tankSize: number,
-    bulletSize: number,
+    direction: Direction,
   ) {
-    this.x = x;
-    this.y = y;
+    super(GameElementItem.Tank, x, y, height, width, color);
     this.speed = speed;
     this.direction = direction;
-    this.tankSize = tankSize;
-    this.height = tankSize;
-    this.width = tankSize;
-    this.bulletSize = bulletSize;
   }
 
-  move(direction: TankDirection, canvasSize: number) {
+  move(direction: Direction) {
     this.direction = direction;
-    console.log(canvasSize);
 
     let newX = this.x;
     let newY = this.y;
@@ -63,31 +57,23 @@ export class TankService {
 
   shoot() {
     if (this.bullets.length < this.maxBullets) {
-      const bullet = {
-        x: this.x + this.tankSize / 2 - this.bulletSize / 2,
-        y: this.y + this.tankSize / 2 - this.bulletSize / 2,
-        direction: this.direction,
-      };
+      const bullet = new BulletService(
+        this.x + this.width / 2 - this.bulletWidth / 2,
+        this.y + this.width / 2 - this.bulletWidth / 2,
+        this.bulletWidth,
+        this.bulletHeight,
+        this.direction,
+        this.bulletSpeed,
+      );
       this.bullets.push(bullet);
     }
   }
 
   updateBullets(canvasSize: number) {
     this.bullets = this.bullets.filter((bullet) => {
-      switch (bullet.direction) {
-        case 'up':
-          bullet.y -= this.bulletSpeed;
-          break;
-        case 'down':
-          bullet.y += this.bulletSpeed;
-          break;
-        case 'left':
-          bullet.x -= this.bulletSpeed;
-          break;
-        case 'right':
-          bullet.x += this.bulletSpeed;
-          break;
-      }
+      bullet.update(); // Обновляем координаты пули
+
+      // Проверяем, остается ли пуля в пределах игрового поля
       return (
         bullet.x >= 0 &&
         bullet.x <= canvasSize &&
@@ -95,5 +81,9 @@ export class TankService {
         bullet.y <= canvasSize
       );
     });
+  }
+
+  update() {
+    // Тут можно вызывать методы move или shoot в зависимости от логики
   }
 }

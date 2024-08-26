@@ -84,4 +84,11 @@ export const fonts = css`
     font-weight: 900;
     font-style: italic;
   }
+
+  @font-face {
+    font-family: 'Bionicle';
+    src: url('/fonts/bionicle-training-card-font-2-4.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
 `;

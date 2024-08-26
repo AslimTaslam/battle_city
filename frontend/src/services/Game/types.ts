@@ -1,6 +1,6 @@
 export type GameMode = 'SINGLEPLAYER' | 'MULTIPLAYER';
 
-export type GameElementType = 'obstacle' | 'tank';
+export type GameElementType = 'obstacle' | 'tank' | 'bullet';
 
 export abstract class GameElement {
   x: number;

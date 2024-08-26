@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
-import { TankDirection } from 'src/services/Tank/types';
+import { Direction } from 'src/services/Tank/types';
 import TankService from 'src/services/Tank';
 
 export class EnemyStore {
@@ -9,7 +9,7 @@ export class EnemyStore {
   bulletSize = 5;
   tankSpeed = 1;
   startCoordinats = { x: 200, y: 50 };
-  defaultDirection: TankDirection = 'down';
+  defaultDirection: Direction = 'down';
 
   constructor() {
     makeAutoObservable(this);
@@ -31,7 +31,7 @@ export class EnemyStore {
     }
   }
 
-  moveEnemy(id: number, direction: TankDirection, canvasSize: number) {
+  moveEnemy(id: number, direction: Direction, canvasSize: number) {
     const enemy = this.enemies[id];
     if (enemy) {
       enemy.move(direction, canvasSize);

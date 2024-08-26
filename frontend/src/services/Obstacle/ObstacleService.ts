@@ -1,4 +1,5 @@
-import { GameElement } from '../Game/types';
+import { GameElementItem } from 'src/services/Game/data';
+import { GameElement } from 'src/services/Game/types';
 import { ObstacleType } from './types';
 
 export class ObstacleService extends GameElement {
@@ -12,7 +13,7 @@ export class ObstacleService extends GameElement {
     width: number,
     color: string,
   ) {
-    super('obstacle', x, y, height, width, color);
+    super(GameElementItem.Obstacle, x, y, height, width, color);
     this.obstacleType = type;
   }
   update() {}

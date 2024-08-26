@@ -1,5 +1,5 @@
 import { playerStore, PlayerStore } from 'src/store/PlayerStore';
-import { TankDirection } from '../Tank/types';
+import { Direction } from 'src/services/Tank/types';
 
 export class PlayerService {
   private playerStore: PlayerStore;
@@ -12,7 +12,7 @@ export class PlayerService {
     this.playerStore.initializePlayers(isMultiplayer);
   }
 
-  movePlayer(id: number, direction: TankDirection, canvasSize: number) {
+  movePlayer(id: number, direction: Direction, canvasSize: number) {
     this.playerStore.movePlayer(id, direction, canvasSize);
   }
 
@@ -24,15 +24,15 @@ export class PlayerService {
     return this.playerStore.players.map((player) => ({
       x: player.x,
       y: player.y,
-      width: playerStore.tankSize,
-      height: playerStore.tankSize,
-      color: 'red',
+      width: player.width,
+      height: player.height,
+      color: player.color,
       bullets: player.bullets.map((bullet) => ({
         x: bullet.x,
         y: bullet.y,
-        width: playerStore.bulletSize,
-        height: playerStore.bulletSize,
-        color: 'yellow',
+        width: bullet.width,
+        height: bullet.height,
+        color: bullet.color,
       })),
     }));
   }
