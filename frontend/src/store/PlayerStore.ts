@@ -6,7 +6,7 @@ import { TankDirection } from 'src/services/Tank/types';
 export class PlayerStore {
   players: TankService[] = [];
   tankSize: number = 36;
-  bulletSize: number = 30;
+  bulletSize: number = 5;
   firstPlayerStartCoordinats = { x: 200, y: 550 };
   secondPlayerStartCoordinats = { x: 300, y: 550 };
   tankSpeed = 5;

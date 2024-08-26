@@ -2,6 +2,7 @@ import { GameStore } from 'src/store/GameStore';
 import MapService from 'src/services/Map';
 import PlayerService from 'src/services/Players';
 import EnemyService from 'src/services/Enemy';
+import CollisionService from 'src/services/Collision';
 // import AudioService from 'src/services/Audio';
 // import StatisticService from 'src/services/Statistics';
 import { playerStore } from 'src/store/PlayerStore';
@@ -11,6 +12,7 @@ export class GameService {
   mapService: MapService;
   playerService: PlayerService;
   enemyService: EnemyService;
+  collisionService: CollisionService;
   // private audioService: AudioService;
   // private statisticService: StatisticService;
   private canvas: HTMLCanvasElement | null = null;
@@ -20,6 +22,7 @@ export class GameService {
     this.mapService = new MapService();
     this.playerService = new PlayerService();
     this.enemyService = new EnemyService();
+    this.collisionService = new CollisionService(this.mapService);
     // this.audioService = new AudioService();
     // this.statisticService = new StatisticService();
   }
@@ -31,7 +34,7 @@ export class GameService {
       this.canvas?.width ? this.canvas?.width / 13 : 680,
     );
     this.playerService.initializePlayers(isMultiplayer);
-    this.enemyService.initializeEnemies(3);
+    // this.enemyService.initializeEnemies(3);
     this.renderGame();
     this.gameLoop();
   }
@@ -43,6 +46,7 @@ export class GameService {
 
     const loop = () => {
       // Обновляем состояние врагов
+      this.collisionService.checkCollisions();
       this.enemyService.moveEnemiesRandomly(canvasSize);
       playerStore.updateBullet(canvasSize ? canvasSize : 680);
 
@@ -57,9 +61,10 @@ export class GameService {
     if (!this.canvas) return;
 
     const context = this.canvas.getContext('2d');
-    if (!context) return;
 
+    if (!context) return;
     context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // context.fillStyle = 'lightblue';
 
     // Отрисовка карты
     const elements = this.mapService.getElements();

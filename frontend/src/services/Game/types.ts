@@ -1,21 +1,35 @@
 export type GameMode = 'SINGLEPLAYER' | 'MULTIPLAYER';
 
-export enum ModeItem {
-  Singleplayer = 'SINGLEPLAYER',
-  Multiplayer = 'MULTIPLAYER',
-}
+export type GameElementType = 'obstacle' | 'tank';
 
-export enum GameDifficulty {
-  Easy = 0,
-  Hard = 1,
-}
+export abstract class GameElement {
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+  color: string;
+  type: GameElementType;
 
-export enum ScreenType {
-  Loading = 'LOADING',
-  MainMenu = 'MAIN_MENU',
-  LevelSelector = 'LEVEL_SELECTOR',
-  GameStart = 'GAME_START',
-  Pause = 'PAUSE',
-  Score = 'SCORE',
-  GameOverPopup = 'GAME_OVER_POPUP',
+  constructor(
+    type: GameElementType,
+    x: number,
+    y: number,
+    height: number,
+    width: number,
+    color: string,
+  ) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+    this.width = width;
+    this.color = color;
+    this.type = type;
+  }
+
+  abstract update(): void;
+
+  render(context: CanvasRenderingContext2D) {
+    context.fillStyle = this.color;
+    context.fillRect(this.x, this.y, this.width, this.height);
+  }
 }

@@ -1,29 +1,31 @@
 import { makeAutoObservable } from 'mobx';
 
-import { Obstacle } from './ObstacleStore';
+import { ObstacleService } from '../services/Obstacle/ObstacleService';
 
 export class MapStore {
-  obstacles: Obstacle[] = [];
+  obstacles: ObstacleService[] = [];
 
   constructor() {
     makeAutoObservable(this);
-    this.generateObstacles();
   }
 
-  generateObstacles() {
-    // Генерация карты с препятствиями (вода, трава, кирпичи и т.д.)
-    this.obstacles.push(new Obstacle('water', 100, 100, 50));
-    this.obstacles.push(new Obstacle('brick', 200, 200, 50));
-    // и т.д.
+  addObstacle(obstacle: ObstacleService) {
+    this.obstacles.push(obstacle);
   }
 
-  getObstacleAtPosition(x: number, y: number): Obstacle | undefined {
+  clearObstacles() {
+    this.obstacles = [];
+  }
+
+  getObstacleAtPosition(x: number, y: number): ObstacleService | undefined {
     return this.obstacles.find(
       (obs) =>
         x >= obs.x &&
-        x <= obs.x + obs.size &&
+        x <= obs.x + obs.width &&
         y >= obs.y &&
-        y <= obs.y + obs.size,
+        y <= obs.y + obs.height,
     );
   }
 }
+
+export const mapStore = new MapStore();

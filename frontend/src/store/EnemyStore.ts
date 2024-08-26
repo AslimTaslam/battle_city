@@ -5,7 +5,7 @@ import TankService from 'src/services/Tank';
 
 export class EnemyStore {
   enemies: TankService[] = [];
-  tankSize = 40;
+  tankSize = 36;
   bulletSize = 5;
   tankSpeed = 1;
   startCoordinats = { x: 200, y: 50 };

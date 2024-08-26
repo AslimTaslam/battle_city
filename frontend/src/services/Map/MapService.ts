@@ -1,178 +1,213 @@
 import { Cell } from './data';
 import { levels } from './levels';
 import { GameElement } from './types';
+import { ObstacleService } from '../Obstacle/ObstacleService';
+import { mapStore, MapStore } from 'src/store/MapStore';
 
 export class MapService {
-  private elements: GameElement[] = [];
-  constructor() {}
+  private mapStore: MapStore;
+
+  constructor() {
+    this.mapStore = mapStore;
+  }
 
   initializeLevel(levelIndex: number, elementSize: number = 50) {
     const levelMap = levels[levelIndex];
 
-    this.elements = []; // Очищаем элементы перед генерацией
+    this.mapStore.clearObstacles(); // Очищаем препятствия перед генерацией
 
     for (let row = 0; row < levelMap.length; row++) {
       for (let col = 0; col < levelMap[row].length; col++) {
         const cellType = levelMap[row][col];
-        const element = this.createElement(
+        const obstacle = this.createObstacle(
           cellType,
           col * elementSize,
           row * elementSize,
           elementSize,
         );
-        if (element) {
-          this.elements.push(element);
+        if (obstacle) {
+          this.mapStore.addObstacle(obstacle);
         }
       }
     }
   }
 
-  private createElement(
+  private createObstacle(
     cellType: Cell,
     x: number,
     y: number,
     elementSize: number,
-  ): GameElement | null {
+  ): ObstacleService | null {
     switch (cellType) {
       case Cell.Brick:
-        return {
+        return new ObstacleService(
+          'brick',
           x,
           y,
-          height: elementSize,
-          width: elementSize,
-          color: 'brown',
-        }; // Полный кирпичный блок
+          elementSize,
+          elementSize,
+          'brown',
+        );
       case Cell.BrickTop:
-        return {
+        return new ObstacleService(
+          'brick',
           x,
           y,
-          height: elementSize / 2,
-          width: elementSize,
-          color: 'brown',
-        }; // Верхняя половина кирпичного блока
+          elementSize / 2,
+          elementSize,
+          'brown',
+        );
       case Cell.BrickBottom:
-        return {
+        return new ObstacleService(
+          'brick',
           x,
-          y: y + elementSize / 2,
-          height: elementSize / 2,
-          width: elementSize,
-          color: 'brown',
-        }; // Нижняя половина кирпичного блока
+          y + elementSize / 2,
+          elementSize / 2,
+          elementSize,
+          'brown',
+        );
       case Cell.BrickLeft:
-        return {
+        return new ObstacleService(
+          'brick',
           x,
           y,
-          height: elementSize,
-          width: elementSize / 2,
-          color: 'brown',
-        }; // Левая половина кирпичного блока
+          elementSize,
+          elementSize / 2,
+          'brown',
+        );
       case Cell.BrickRight:
-        return {
-          x: x + elementSize / 2,
+        return new ObstacleService(
+          'brick',
+          x + elementSize / 2,
           y,
-          height: elementSize,
-          width: elementSize / 2,
-          color: 'brown',
-        }; // Правая половина кирпичного блока
+          elementSize,
+          elementSize / 2,
+          'brown',
+        );
       case Cell.BrickBottomLeft:
-        return {
+        return new ObstacleService(
+          'brick',
           x,
-          y: y + elementSize / 2,
-          height: elementSize / 2,
-          width: elementSize / 2,
-          color: 'brown',
-        }; // Нижняя левая четверть
+          y + elementSize / 2,
+          elementSize / 2,
+          elementSize / 2,
+          'brown',
+        );
       case Cell.BrickBottomRight:
-        return {
-          x: x + elementSize / 2,
-          y: y + elementSize / 2,
-          height: elementSize / 2,
-          width: elementSize / 2,
-          color: 'brown',
-        }; // Нижняя правая четверть
+        return new ObstacleService(
+          'brick',
+          x + elementSize / 2,
+          y + elementSize / 2,
+          elementSize / 2,
+          elementSize / 2,
+          'brown',
+        );
       case Cell.Concrete:
-        return { x, y, height: elementSize, width: elementSize, color: 'gray' }; // Полный бетонный блок
+        return new ObstacleService(
+          'stone',
+          x,
+          y,
+          elementSize,
+          elementSize,
+          'gray',
+        );
       case Cell.ConcreteTop:
-        return {
+        return new ObstacleService(
+          'stone',
           x,
           y,
-          height: elementSize / 2,
-          width: elementSize,
-          color: 'gray',
-        }; // Верхняя половина бетонного блока
+          elementSize / 2,
+          elementSize,
+          'gray',
+        );
       case Cell.ConcreteBottom:
-        return {
+        return new ObstacleService(
+          'stone',
           x,
-          y: y + elementSize / 2,
-          height: elementSize / 2,
-          width: elementSize,
-          color: 'gray',
-        }; // Нижняя половина бетонного блока
+          y + elementSize / 2,
+          elementSize / 2,
+          elementSize,
+          'gray',
+        );
       case Cell.ConcreteLeft:
-        return {
+        return new ObstacleService(
+          'stone',
           x,
           y,
-          height: elementSize,
-          width: elementSize / 2,
-          color: 'gray',
-        }; // Левая половина бетонного блока
+          elementSize,
+          elementSize / 2,
+          'gray',
+        );
       case Cell.ConcreteRight:
-        return {
-          x: x + elementSize / 2,
+        return new ObstacleService(
+          'stone',
+          x + elementSize / 2,
           y,
-          height: elementSize,
-          width: elementSize / 2,
-          color: 'gray',
-        }; // Правая половина бетонного блока
+          elementSize,
+          elementSize / 2,
+          'gray',
+        );
       case Cell.ConcreteBottomLeft:
-        return {
+        return new ObstacleService(
+          'stone',
           x,
-          y: y + elementSize / 2,
-          height: elementSize / 2,
-          width: elementSize / 2,
-          color: 'gray',
-        }; // Нижняя левая четверть бетонного блока
+          y + elementSize / 2,
+          elementSize / 2,
+          elementSize / 2,
+          'gray',
+        );
       case Cell.ConcreteBottomRight:
-        return {
-          x: x + elementSize / 2,
-          y: y + elementSize / 2,
-          height: elementSize / 2,
-          width: elementSize / 2,
-          color: 'gray',
-        }; // Нижняя правая четверть бетонного блока
+        return new ObstacleService(
+          'stone',
+          x + elementSize / 2,
+          y + elementSize / 2,
+          elementSize / 2,
+          elementSize / 2,
+          'gray',
+        );
       case Cell.Forest:
-        return {
+        return new ObstacleService(
+          'grass',
           x,
           y,
-          height: elementSize,
-          width: elementSize,
-          color: 'green',
-        }; // Трава
+          elementSize,
+          elementSize,
+          'green',
+        );
       case Cell.Water:
-        return { x, y, height: elementSize, width: elementSize, color: 'blue' }; // Вода
+        return new ObstacleService(
+          'water',
+          x,
+          y,
+          elementSize,
+          elementSize,
+          'blue',
+        );
       case Cell.Ice:
-        return {
+        return new ObstacleService(
+          'ice',
           x,
           y,
-          height: elementSize,
-          width: elementSize,
-          color: 'lightblue',
-        }; // Лёд
+          elementSize,
+          elementSize,
+          'lightblue',
+        );
       case Cell.Base:
-        return {
+        return new ObstacleService(
+          'hq',
           x,
           y,
-          height: elementSize,
-          width: elementSize,
-          color: 'yellow',
-        }; // Штаб
+          elementSize,
+          elementSize,
+          'yellow',
+        );
       case Cell.Blank:
       default:
-        return null; // Пустые клетки не отображаются
+        return null;
     }
   }
 
   public getElements(): GameElement[] {
-    return this.elements;
+    return this.mapStore.obstacles;
   }
 }

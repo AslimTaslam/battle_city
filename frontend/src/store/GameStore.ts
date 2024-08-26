@@ -1,12 +1,12 @@
 import { makeAutoObservable } from 'mobx';
 
-import { MenuItem } from 'src/services/Game/data';
 import {
+  MenuItem,
   GameDifficulty,
-  GameMode,
   ModeItem,
   ScreenType,
-} from 'src/services/Game/types';
+} from 'src/services/Game/data';
+import { GameMode } from 'src/services/Game/types';
 import { levels } from 'src/services/Map/levels';
 
 export class GameStore {

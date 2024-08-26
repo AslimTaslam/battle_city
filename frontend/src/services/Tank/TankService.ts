@@ -9,6 +9,8 @@ export class TankService {
   bulletSpeed: number = 3;
   maxBullets: number = 1;
   tankSize: number = 36;
+  height: number;
+  width: number;
   bulletSize: number = 5;
 
   constructor(
@@ -24,27 +26,34 @@ export class TankService {
     this.speed = speed;
     this.direction = direction;
     this.tankSize = tankSize;
+    this.height = tankSize;
+    this.width = tankSize;
     this.bulletSize = bulletSize;
   }
 
   move(direction: TankDirection, canvasSize: number) {
     this.direction = direction;
+    console.log(canvasSize);
 
     let newX = this.x;
     let newY = this.y;
 
     switch (direction) {
       case 'up':
-        newY = Math.max(0, this.y - this.speed);
+        // newY = Math.max(0, this.y - this.speed);
+        newY = this.y - this.speed;
         break;
       case 'down':
-        newY = Math.min(canvasSize - this.tankSize, this.y + this.speed);
+        // newY = Math.min(canvasSize - this.tankSize, this.y + this.speed);
+        newY = this.y + this.speed;
         break;
       case 'left':
-        newX = Math.max(0, this.x - this.speed);
+        // newX = Math.max(0, this.x - this.speed);
+        newX = this.x - this.speed;
         break;
       case 'right':
-        newX = Math.min(canvasSize - this.y, this.x + this.speed);
+        // newX = Math.min(canvasSize - this.y, this.x + this.speed);
+        newX = this.x + this.speed;
         break;
     }
 
