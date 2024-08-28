@@ -1,15 +1,50 @@
 import { playerStore, PlayerStore } from 'src/store/PlayerStore';
 import { Direction } from 'src/services/Tank/types';
+import TankService from 'src/services/Tank';
+import CollisionService from 'src/services/Collision';
+import { GameMode } from 'src/services/Game/types';
+import { ModeItem } from 'src/services/Game/data';
 
 export class PlayerService {
   private playerStore: PlayerStore;
+  private collisionService: CollisionService;
 
-  constructor() {
+  constructor(collisionService: CollisionService) {
     this.playerStore = playerStore;
+    this.collisionService = collisionService;
   }
 
-  initializePlayers(isMultiplayer: boolean) {
-    this.playerStore.initializePlayers(isMultiplayer);
+  initializePlayers(isMultiplayer: GameMode) {
+    const baseCharacteristics = {
+      height: playerStore.height,
+      width: playerStore.width,
+      color: playerStore.color,
+      speed: playerStore.tankSpeed,
+      direction: playerStore.defaultDirection,
+    };
+    const players = [
+      new TankService(
+        {
+          x: playerStore.firstPlayerStartCoordinats.x,
+          y: playerStore.firstPlayerStartCoordinats.y,
+          ...baseCharacteristics,
+        },
+        this.collisionService,
+      ),
+    ]; // Первый игрок
+    if (isMultiplayer === ModeItem.Multiplayer) {
+      players.push(
+        new TankService(
+          {
+            x: playerStore.secondPlayerStartCoordinats.x,
+            y: playerStore.secondPlayerStartCoordinats.y,
+            ...baseCharacteristics,
+          },
+          this.collisionService,
+        ),
+      ); // Второй игрок
+    }
+    this.playerStore.initializePlayers(players);
   }
 
   movePlayer(id: number, direction: Direction, canvasSize: number) {
@@ -35,5 +70,13 @@ export class PlayerService {
         color: bullet.color,
       })),
     }));
+  }
+
+  updateBullets(canvasSize: number) {
+    playerStore.updateBullets(canvasSize);
+  }
+
+  updateStartCoordinates(canvasSize: number) {
+    playerStore.updateStartCoordinates(canvasSize);
   }
 }

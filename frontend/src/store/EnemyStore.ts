@@ -5,36 +5,26 @@ import TankService from 'src/services/Tank';
 
 export class EnemyStore {
   enemies: TankService[] = [];
-  tankSize = 36;
+  height = 36;
+  width = 36;
+  color = 'red';
   bulletSize = 5;
   tankSpeed = 1;
-  startCoordinats = { x: 200, y: 50 };
+  startCoordinats = { x: 200, y: 5 };
   defaultDirection: Direction = 'down';
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  initializeEnemies(count: number) {
-    this.enemies = [];
-    for (let i = 0; i < count; i++) {
-      this.enemies.push(
-        new TankService(
-          this.startCoordinats.x + i * 100,
-          this.startCoordinats.y,
-          this.tankSpeed,
-          this.defaultDirection,
-          this.tankSize,
-          this.bulletSize,
-        ),
-      );
-    }
+  initializeEnemies(enemies: TankService[]) {
+    this.enemies = enemies;
   }
 
-  moveEnemy(id: number, direction: Direction, canvasSize: number) {
+  moveEnemy(id: number, direction: Direction) {
     const enemy = this.enemies[id];
     if (enemy) {
-      enemy.move(direction, canvasSize);
+      enemy.move(direction);
     }
   }
 

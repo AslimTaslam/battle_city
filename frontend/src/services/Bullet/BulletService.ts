@@ -1,4 +1,4 @@
-import { GameElement } from 'src/services/Game/types';
+import { GameElement } from 'src/models/GameElement';
 import { GameElementItem } from 'src/services/Game/data';
 import { Direction } from 'src/services/Tank/types';
 

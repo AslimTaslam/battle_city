@@ -1,7 +1,8 @@
 import BulletService from 'src/services/Bullet';
-import { GameElement } from 'src/services/Game/types';
+import { GameElement } from 'src/models/GameElement';
 import { GameElementItem } from 'src/services/Game/data';
-import { Direction } from './types';
+import { Direction, TankCharacteristics } from './types';
+import CollisionService from '../Collision';
 
 export class TankService extends GameElement {
   speed: number;
@@ -11,19 +12,40 @@ export class TankService extends GameElement {
   bulletWidth: number = 5;
   bulletHeight: number = 5;
   maxBullets: number = 1;
+  collisionService: CollisionService;
 
   constructor(
-    x: number,
-    y: number,
-    height: number,
-    width: number,
-    color: string,
-    speed: number,
-    direction: Direction,
+    tankCharacteristics: TankCharacteristics,
+    collisionService: CollisionService,
   ) {
-    super(GameElementItem.Tank, x, y, height, width, color);
-    this.speed = speed;
-    this.direction = direction;
+    super(
+      GameElementItem.Tank,
+      tankCharacteristics.x,
+      tankCharacteristics.y,
+      tankCharacteristics.height,
+      tankCharacteristics.width,
+      tankCharacteristics.color,
+    );
+    this.collisionService = collisionService;
+    this.speed = tankCharacteristics.speed;
+    this.direction = tankCharacteristics.direction;
+  }
+
+  canMove(newX: number, newY: number): boolean {
+    const tempTank = {
+      x: newX,
+      y: newY,
+      height: this.height,
+      width: this.width,
+      type: 'tank',
+      color: this.color,
+    };
+
+    if (this.collisionService.checkCollisionWithObstacles(tempTank)) {
+      return false;
+    }
+
+    return true;
   }
 
   move(direction: Direction) {
@@ -51,8 +73,10 @@ export class TankService extends GameElement {
         break;
     }
 
-    this.x = newX;
-    this.y = newY;
+    if (this.canMove(newX, newY)) {
+      this.x = newX;
+      this.y = newY;
+    }
   }
 
   shoot() {

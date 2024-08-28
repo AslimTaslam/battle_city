@@ -1,24 +1,65 @@
 import { FC, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import GameService from 'src/services/Game';
+import { GameDifficulty } from 'src/services/Game/data';
 import * as Style from './HomePage.style';
+
+interface ActionParams {
+  gameService?: GameService | null;
+  navigate?: (path: string) => void;
+  difficulty?: GameDifficulty;
+}
 
 const menuItems = [
   {
     label: '1 PLAYER',
-    action: () => console.log('SinglePlayer selected'),
+    action({ gameService, navigate }: ActionParams) {
+      if (gameService && navigate) {
+        gameService.gameStore.setGameMode('SINGLEPLAYER');
+        navigate(`/${this.uri}`);
+      }
+    },
     uri: 'game',
   },
-  { label: '2 PLAYERS', action: () => console.log('MultiPlayer selected') },
+  {
+    label: '2 PLAYERS',
+    action({ gameService, navigate }: ActionParams) {
+      if (gameService && navigate) {
+        gameService.gameStore.setGameMode('MULTIPLAYER');
+        navigate(`/${this.uri}`);
+      }
+    },
+    uri: 'game',
+  },
   {
     label: '2 PLAYERS ONLINE',
     action: () => console.log('MultiPlayerOnline selected'),
   },
-  { label: 'STATISTICS', action: () => console.log('Statistics selected') },
-  { label: 'DIFFICULT', action: () => console.log('Difficulty toggled') },
+  {
+    label: 'STATISTICS',
+    action({ navigate }: ActionParams) {
+      if (navigate) {
+        navigate(`/${this.uri}`);
+      }
+    },
+    uri: 'stat',
+  },
+  {
+    label: 'DIFFICULT',
+    action({ gameService, difficulty }: ActionParams) {
+      if (gameService && difficulty) {
+        gameService.gameStore.setDifficulty(difficulty);
+      }
+    },
+  },
 ];
 
-export const HomePage: FC = () => {
+interface HomePageProps {
+  gameService: GameService | null;
+}
+
+export const HomePage: FC<HomePageProps> = ({ gameService }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isDifficult, setIsDifficult] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -35,10 +76,14 @@ export const HomePage: FC = () => {
       const selectedItem = menuItems[selectedIndex];
       if (selectedItem.label === 'DIFFICULT') {
         setIsDifficult((prev) => !prev);
-      } else if (selectedItem?.uri) {
-        navigate(`/${selectedItem.uri}`);
+        selectedItem.action({
+          gameService,
+          difficulty: isDifficult ? GameDifficulty.Hard : GameDifficulty.Easy,
+        });
+      } else if (selectedItem.label === 'STATISTICS') {
+        selectedItem.action({ navigate });
       } else {
-        selectedItem.action();
+        selectedItem.action({ gameService, navigate });
       }
     }
   };
@@ -51,10 +96,12 @@ export const HomePage: FC = () => {
     const selectedItem = menuItems[index];
     if (selectedItem.label === 'DIFFICULT') {
       setIsDifficult((prev) => !prev);
-    } else if (selectedItem?.uri) {
-      navigate(`/${selectedItem.uri}`);
+      selectedItem.action({
+        gameService,
+        difficulty: isDifficult ? GameDifficulty.Hard : GameDifficulty.Easy,
+      });
     } else {
-      selectedItem.action();
+      selectedItem.action({ gameService, navigate });
     }
   };
 

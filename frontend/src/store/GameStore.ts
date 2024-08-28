@@ -15,6 +15,9 @@ export class GameStore {
   /** Стоит ли игра на паузе. */
   paused: boolean = false;
 
+  //** Количество row и col для игрового поля на карте */
+  numberElements = 13;
+
   /** Текущий игровой уровень. */
   level = 1;
   /** Игровых уровней всего (35). */
@@ -68,27 +71,36 @@ export class GameStore {
   shieldPowerupDuration = 10000;
   /** Сколько по времени действует бонус, замораживающий на месте вражеские танки. */
   freezePowerupDuration = 10000;
+  /** Время игрового цикла в мс */
+  loopTimeMs = 16;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  startGame() {
-    this.inited = true;
-    this.paused = false;
+  // startGame() {
+  //   this.inited = true;
+  //   this.paused = false;
+  // }
+
+  // stopGame() {
+  //   this.inited = false;
+  //   this.paused = false;
+  // }
+
+  // resetGame() {
+  //   this.paused = false;
+  // }
+
+  // resetSession() {
+  //   this.stopGame();
+  //   this.startGame();
+  // }
+  setGameMode(mode: GameMode) {
+    this.mode = mode;
   }
 
-  stopGame() {
-    this.inited = false;
-    this.paused = false;
-  }
-
-  resetGame() {
-    this.paused = false;
-  }
-
-  resetSession() {
-    this.stopGame();
-    this.startGame();
+  setDifficulty(difficulty: GameDifficulty) {
+    this.difficulty = difficulty;
   }
 }

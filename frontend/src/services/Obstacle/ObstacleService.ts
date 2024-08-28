@@ -1,5 +1,5 @@
 import { GameElementItem } from 'src/services/Game/data';
-import { GameElement } from 'src/services/Game/types';
+import { GameElement } from 'src/models/GameElement';
 import { ObstacleType } from './types';
 
 export class ObstacleService extends GameElement {

@@ -1,15 +1,39 @@
 import { enemyStore, EnemyStore } from 'src/store/EnemyStore';
 import { Direction } from 'src/services/Tank/types';
+import TankService from '../Tank';
+import CollisionService from '../Collision';
 
 export class EnemyService {
   private enemyStore: EnemyStore;
+  private collisionService: CollisionService;
 
-  constructor() {
+  constructor(collisionService: CollisionService) {
     this.enemyStore = enemyStore;
+    this.collisionService = collisionService;
   }
 
   initializeEnemies(count: number) {
-    this.enemyStore.initializeEnemies(count);
+    const baseCharacteristics = {
+      height: enemyStore.height,
+      width: enemyStore.width,
+      color: enemyStore.color,
+      speed: enemyStore.tankSpeed,
+      direction: enemyStore.defaultDirection,
+    };
+    const enemies = [];
+    for (let i = 0; i < count; i++) {
+      enemies.push(
+        new TankService(
+          {
+            x: enemyStore.startCoordinats.x + i * 100,
+            y: enemyStore.startCoordinats.y,
+            ...baseCharacteristics,
+          },
+          this.collisionService,
+        ),
+      );
+    }
+    this.enemyStore.initializeEnemies(enemies);
   }
 
   moveEnemy(id: number, direction: Direction, canvasSize: number) {
@@ -24,8 +48,8 @@ export class EnemyService {
     return this.enemyStore.enemies.map((enemy) => ({
       x: enemy.x,
       y: enemy.y,
-      width: this.enemyStore.tankSize,
-      height: this.enemyStore.tankSize,
+      width: this.enemyStore.width,
+      height: this.enemyStore.height,
       color: 'blue',
       bullets: enemy.bullets.map((bullet) => ({
         x: bullet.x,
